@@ -2,6 +2,9 @@
 	font-size: 2rem;
 	color: red;
 }
+#delete {
+	display: inline;
+}
 .main.container.segment {
 	margin-top: 7.0em;
 }
