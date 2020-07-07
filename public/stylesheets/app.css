@@ -2,7 +2,9 @@
 	font-size: 2rem;
 	color: red;
 }
-
+.main.container.segment {
+	margin-top: 7.0em;
+}
 h2 {
 	background-color: aqua;
 }
