@@ -1,4 +1,5 @@
 let bodyParser = require('body-parser'),
+	expressSanitizer = require('express-sanitizer'),
 	methodOverride = require('method-override'),
 	mongoose = require('mongoose'),
 	express = require('express'),
@@ -8,6 +9,7 @@ mongoose.connect('mongodb://localhost:27017/blogapp', { useNewUrlParser: true, u
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressSanitizer());
 app.use(methodOverride('_method'));
 //Mongoose/Model config
 let blogSchema = new mongoose.Schema({
@@ -46,6 +48,7 @@ app.get('/blogs/new', (req, res) => {
 });
 //post route for new blog
 app.post('/blogs', (req, res) => {
+	req.body.blog.body = req.sanitize(req.body.blog.body);
 	blog.create(req.body.blog, (err, newblog) => {
 		if (err) {
 			console.log(err);
@@ -77,6 +80,7 @@ app.get('/blogs/:id/edit', (req, res) => {
 	});
 });
 app.put('/blogs/:id', (req, res) => {
+	req.body.blog.body = req.sanitize(req.body.blog.body);
 	blog.findByIdAndUpdate(req.params.id, req.body.blog, (err, updatedBlog) => {
 		if (err) {
 			console.log(err);
@@ -96,7 +100,8 @@ app.delete('/blogs/:id', (req, res) => {
 		}
 	});
 });
-
+//Adding up sanitizer module
+//Styling index page
 app.listen(3000, () => {
 	console.log('Server Started!');
 });
